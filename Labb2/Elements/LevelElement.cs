@@ -18,10 +18,11 @@
     }
     public void Draw()
     {
-        Console.SetCursorPosition(this.ObjectPosition.XPosition, this.ObjectPosition.YPosition);
+        Console.SetCursorPosition(this.ObjectPosition.XPosition, this.ObjectPosition.YPosition + 3);
         Console.ForegroundColor = this.ObjectColor;
         Console.Write($"{ObjectForm}");
     }
+        
 
 
 

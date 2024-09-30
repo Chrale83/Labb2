@@ -35,7 +35,8 @@ public class LevelData
                         Elements.Add(new Rat(tempXPos, tempYPos));
                         break;
                     case '@':
-                        Elements.Add(new Player(tempXPos, tempYPos));
+                        Player myPlayer = new Player(tempXPos, tempYPos);
+                        Elements.Add(myPlayer);
                         break;
                     default:
                         break;
@@ -44,20 +45,15 @@ public class LevelData
             tempYPos++;
             Console.WriteLine();
         }
-        
+        foreach (var item in Elements)
+        {
+            item.Draw();
+        }
     }
 
                 
 
-    //public void TempPrintLevel()
-    //{
-    //    foreach (var item in Elements)
-    //    {
-    //        Console.SetCursorPosition(item.ObjectPosition.XPosition, item.ObjectPosition.YPosition);
-    //        Console.ForegroundColor = item.ObjectColor;
-    //        Console.WriteLine(item.ObjectForm);
-    //    }
-    //}
+    
 }
             
 
