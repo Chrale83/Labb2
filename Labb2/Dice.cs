@@ -1,4 +1,4 @@
-﻿class Dice
+﻿public class Dice
 {
 
 }

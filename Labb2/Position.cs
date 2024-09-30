@@ -1,11 +1,11 @@
 ﻿public struct Position
 {
-    public int XPosition { get; set; }
-    public int YPosition { get; set; }
+    public int X { get; set; }
+    public int Y { get; set; }
 
     public Position(int x, int y)
     {
-        this.XPosition = x;
-        this.YPosition = y;
+        this.X = x;
+        this.Y = y;
     }
 }

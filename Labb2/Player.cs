@@ -1,5 +1,6 @@
-﻿class Player : LevelElement
+﻿public class Player : LevelElement
 {
+    
     public string Name { get { return "Knight"; } }
     public int PlayerHp { get { return 100; } }
         
@@ -8,8 +9,10 @@
 
     public override char ObjectForm { get { return '@'; } }
     public override ConsoleColor ObjectColor { get { return ConsoleColor.Yellow; } }
-    public Player(int x, int y) : base(x, y)
+    
+    public Player(Position startPosition) : base(startPosition.X, startPosition.Y)
     {
+        
 
     }
 

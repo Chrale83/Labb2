@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-abstract class Enemy : LevelElement
+public abstract class Enemy : LevelElement
 {
     public string Name { get; set; }
     public int Hp { get; set; }
@@ -10,13 +10,13 @@ abstract class Enemy : LevelElement
     public Enemy(int x, int y) : base(x, y)
     {
         
-
     }
+    public abstract void Update();
+
 
 
     
 
-    public abstract void Update();
 
 }
 

@@ -2,15 +2,27 @@
 {
     static void Main(string[] args)
     {
-        
-        LevelData loadLevel = new LevelData();
-        loadLevel.LoadLevel();
+        Console.CursorVisible = false;
+        GameLoop StartGame = new GameLoop();
+        StartGame.GameRun();
 
-       
+        //LevelData loadLevel = new LevelData();
+        
         
         
 
         
+        
+
+        
+
+
+
+
+
+
+
+
     }
 }
 
