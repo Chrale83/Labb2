@@ -13,11 +13,11 @@ public class LevelData
     }
     public LevelData() //Konstruktorn
     {
-        //_elements = new List<LevelElement>();
+        _elements = new List<LevelElement>();
     }
     public void LoadLevel() //Läser in text filen och skapar objekt av respektive tecken
     {
-        _elements = new List<LevelElement>();
+        //_elements = new List<LevelElement>();
         string level = @"C:\Users\Chral\source\repos\NET24\Csharp\Labb2\Labb2\Levels\Level1.txt";
         StreamReader streamReader = new StreamReader(level);
         string line;
@@ -27,7 +27,6 @@ public class LevelData
         {
             for (int tempXPos = 0; tempXPos < line.Length; tempXPos++)
             {
-
                 switch (line[tempXPos])
                 {
                     case '#':
@@ -49,24 +48,6 @@ public class LevelData
             tempYPos++;
         }
     }
-    //public void CheckIfWall()
-    //{
-    //    foreach (var item in Elements)
-    //    {
-    //        item.Position.X
-    //    }
-    //}
 }
-        
-
-
-
-
-
-
-
-
-
-
 
 

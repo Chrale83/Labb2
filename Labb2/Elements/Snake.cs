@@ -1,7 +1,7 @@
 ﻿public class Snake : Enemy
 {
-    public override char ObjectForm { get { return 'S'; } }
-    public override ConsoleColor ObjectColor { get { return ConsoleColor.DarkGreen; } }
+    public override char ElementForm { get { return 'S'; } }
+    public override ConsoleColor ElementColor { get { return ConsoleColor.DarkGreen; } }
 
     public Snake(int x, int y) : base(x, y)
     {

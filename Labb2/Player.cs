@@ -7,8 +7,8 @@
     public Dice DiceAttack { get; set; }
     public Dice DiceDefence { get; set; }
 
-    public override char ObjectForm { get { return '@'; } }
-    public override ConsoleColor ObjectColor { get { return ConsoleColor.Yellow; } }
+    public override char ElementForm { get { return '@'; } }
+    public override ConsoleColor ElementColor { get { return ConsoleColor.Yellow; } }
     
     public Player(Position startPosition) : base(startPosition.X, startPosition.Y)
     {
