@@ -1,29 +1,22 @@
 ﻿using Labb2;
-using System.Diagnostics.CodeAnalysis;
-using System.Threading.Channels;
 
 public class GameLoop
 {
     public void GameRun()
     {
-        LevelData loadLevel = new LevelData();
-        loadLevel.LoadLevel();
-
-
-        foreach (var item in loadLevel.Elements)
+        LevelData levelData = new LevelData();
+        levelData.LoadLevel();
+        foreach (var item in levelData.Elements)
         {
             item.Draw();
         }
-        
-
-        Player player = new Player(loadLevel.PlayerStartPosition);
-
+        Player player = new Player(levelData.PlayerStartPosition);
         int turn = 0;
         while (true)
         {
-            PlayerTurn(player, loadLevel);
             PlayerStats(player, turn++);
-            //Update()
+            PlayerTurn(player, levelData);
+            EnemyTurn(levelData);
 
             //Spelar statsen skrivs ut
             //Spelaren gör nåt
@@ -31,71 +24,53 @@ public class GameLoop
             //Fienden rör sig
         }
     }
-
-
-
-    public void PlayerTurn(Player player, LevelData levelData)
+    public void PlayerTurn(Player player, LevelData levelData) //-----> Flytta denna till PlayerAction??? <----
     {
-        int playerPositionX = player.Position.X;
-        int playerPositionY = player.Position.Y;
-
+        int tempX = player.Position.X;
+        int tempY = player.Position.Y;
         ConsoleKeyInfo keyPressed = Console.ReadKey();
-        Console.SetCursorPosition(playerPositionX, playerPositionY);
+        Console.SetCursorPosition(tempX, tempY);
         Console.Write(" ");
-
         switch (keyPressed.Key)
         {
             case ConsoleKey.LeftArrow:
-
-                playerPositionX -= PlayerAction.MoveLeft(playerPositionX, playerPositionY, levelData);
+                tempX -= PlayerAction.MoveLeft(tempX, tempY, levelData, player);
                 break;
             case ConsoleKey.RightArrow:
-                playerPositionX += PlayerAction.MoveRight(playerPositionX, playerPositionY, levelData);
+                tempX += PlayerAction.MoveRight(tempX, tempY, levelData, player);
                 break;
             case ConsoleKey.UpArrow:
-                playerPositionY -= PlayerAction.MoveUpp(playerPositionX, playerPositionY, levelData);
+                tempY -= PlayerAction.MoveUpp(tempX, tempY, levelData, player);
                 break;
             case ConsoleKey.DownArrow:
-
-                playerPositionY += PlayerAction.MoveDown(playerPositionX, playerPositionY, levelData);
+                tempY += PlayerAction.MoveDown(tempX, tempY, levelData, player);
                 break;
             default:
                 break;
         }
-
-        Console.SetCursorPosition(playerPositionX, playerPositionY);
-        player.Position = new Position(playerPositionX, playerPositionY);
+        Console.SetCursorPosition(tempX, tempY);
+        player.Position = new Position(tempX, tempY);
+        
         Console.ForegroundColor = player.ElementColor;
         Console.Write(player.ElementForm);
     }
     public void PlayerStats(Player player, int turn)
     {
-
         Console.SetCursorPosition(0, 20);
-        Console.WriteLine($"{player.Name} ; {player.PlayerHp}, {turn}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
+        Console.WriteLine($"playername: {player.Name} Hp:{player.PlayerHp} Turns: {turn}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
+    }
+
+    public void EnemyTurn(LevelData levelData)
+    {
+        foreach (var item in levelData.Elements)
+        {
+            if (item is Enemy)
+            {
+                Enemy enemy = item as Enemy;
+                enemy.Update();
+                //PlayerAction.CheckIfSpace(enemy.Position.X, enemy.Position.Y, levelData);
+
+            }
+        }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

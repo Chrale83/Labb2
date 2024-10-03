@@ -9,25 +9,8 @@
     }
     public void Draw()
     {
-        
         Console.SetCursorPosition(this.Position.X, this.Position.Y); 
         Console.ForegroundColor = this.ElementColor;
         Console.Write($"{ElementForm}");
     }
-    
-   
-
-    
-    
-       
-   
-
-
-        
-
-
-
-
-
 }
-

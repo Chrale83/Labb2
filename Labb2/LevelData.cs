@@ -1,11 +1,6 @@
-﻿
-
-
-
-public class LevelData
+﻿public class LevelData
 {
     private List<LevelElement> _elements;
-
     public Position PlayerStartPosition { get; set; }
     public List<LevelElement> Elements
     {
@@ -22,7 +17,6 @@ public class LevelData
         StreamReader streamReader = new StreamReader(level);
         string line;
         int tempYPos = 0;
-
         while ((line = streamReader.ReadLine()) != null)
         {
             for (int tempXPos = 0; tempXPos < line.Length; tempXPos++)
@@ -49,5 +43,3 @@ public class LevelData
         }
     }
 }
-
-
