@@ -5,7 +5,7 @@ public class Dice
     public int SidesPerDice { get; set; }
     public int NumberOfDice { get; set; }
     public int Modifier { get; set; }
-    public int TotalValue { get; set; }
+    
     Random random = new Random();
     public Dice(int numberOfDice, int SidesPerDice, int modifier)
     {
@@ -16,8 +16,8 @@ public class Dice
     public int Throw()
     {
         int diceOff = 1;
-        int dice = NumberOfDice * (random.Next(1, SidesPerDice + diceOff) + Modifier);
-        return dice;
+        int dice = NumberOfDice * (random.Next(1, SidesPerDice + diceOff));
+        return dice + Modifier;
     }
     
     public override string ToString()
@@ -37,13 +37,3 @@ public class Dice
 //beskriver objektets konfiguration. t.ex: “3d6 + 2”.
 
 
-//public int ThrowDice()
-//{
-//    int dice = random.Next(1, 7);
-//    return dice;
-//}
-//public int ThrowMultipleDice(int n)
-//{
-//    int multiDice = n * ThrowDice();
-//    return multiDice;
-//}

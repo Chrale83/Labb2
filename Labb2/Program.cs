@@ -1,11 +1,19 @@
 ﻿
-        Console.CursorVisible = false;
-        GameLoop StartGame = new GameLoop();
-        StartGame.GameRun();
-        //Todo
-        // .Skapa rörelsemönster åt Rat & Snake
-        // .Göra så Enemy instanserna inte kan gå in i väggar
-        // .Skapa Dice metoder
-        // .Göra så spelaren kan använda Dice
-        // .Gör så fienden ska använda Dice
-        // .Skapa synfältet
+string path = Directory.GetCurrentDirectory();
+Console.CursorVisible = false;
+GameLoop StartGame = new GameLoop();
+StartGame.GameRun();
+
+Console.Clear();
+Console.WriteLine("Spelet är avslutat");
+
+
+//Todo
+
+
+
+// .Fixa filinläsningen
+// .Göra så spelaren kan dö
+// .Snygga till strdstexten
+// .Titta över namn på metoder/variabler/klasser
+// 

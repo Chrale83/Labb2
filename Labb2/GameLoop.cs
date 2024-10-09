@@ -1,76 +1,106 @@
 ﻿using Labb2;
-
+using System.Security.Cryptography.X509Certificates;
 public class GameLoop
 {
+    private bool runGame = true;
+    public LevelData GameLevelData { get; set; }
+    public Player ActivePlayer { get; set; }
+    public int Turn { get; set; }
+    public GameLoop()
+    {
+        this.Turn = 0;
+        this.GameLevelData = new LevelData();
+        this.GameLevelData.LoadLevel();
+        this.ActivePlayer = new Player(GameLevelData.PlayerStartPosition);
+    }
     public void GameRun()
     {
-        LevelData levelData = new LevelData();
-        levelData.LoadLevel();
-        foreach (var item in levelData.Elements)
+        while (runGame)
         {
-            item.Draw();
-        }
-        Player player = new Player(levelData.PlayerStartPosition);
-        int turn = 0;
-        while (true)
-        {
-            PlayerStats(player, turn++);
-            PlayerTurn(player, levelData);
-            EnemyTurn(levelData);
-
-            //Spelar statsen skrivs ut
-            //Spelaren gör nåt
-            //En turn
-            //Fienden rör sig
+            
+            DrawMap();
+            PlayerStats();
+            PlayerTurn();
+            EnemyTurn();
+            
+            
         }
     }
-    public void PlayerTurn(Player player, LevelData levelData) //-----> Flytta denna till PlayerAction??? <----
+    public void DrawMap()
     {
-        int tempX = player.Position.X;
-        int tempY = player.Position.Y;
+        foreach (var item in GameLevelData.Elements)
+        {
+            item.Draw(ActivePlayer);
+        }
+    }
+    public void PlayerTurn() //-----> Flytta denna till PlayerAction??? <----
+    {
+        int tempX = ActivePlayer.Position.X;
+        int tempY = ActivePlayer.Position.Y;
         ConsoleKeyInfo keyPressed = Console.ReadKey();
         Console.SetCursorPosition(tempX, tempY);
         Console.Write(" ");
         switch (keyPressed.Key)
         {
             case ConsoleKey.LeftArrow:
-                tempX -= PlayerAction.MoveLeft(tempX, tempY, levelData, player);
+                tempX -= GameAction.MoveLeft(tempX, tempY, GameLevelData, ActivePlayer);
                 break;
             case ConsoleKey.RightArrow:
-                tempX += PlayerAction.MoveRight(tempX, tempY, levelData, player);
+                tempX += GameAction.MoveRight(tempX, tempY, GameLevelData, ActivePlayer);
                 break;
             case ConsoleKey.UpArrow:
-                tempY -= PlayerAction.MoveUpp(tempX, tempY, levelData, player);
+                tempY -= GameAction.MoveUpp(tempX, tempY, GameLevelData, ActivePlayer);
                 break;
             case ConsoleKey.DownArrow:
-                tempY += PlayerAction.MoveDown(tempX, tempY, levelData, player);
+                tempY += GameAction.MoveDown(tempX, tempY, GameLevelData, ActivePlayer);
+                break;
+            case ConsoleKey.Spacebar:
+                
+                break;
+            case ConsoleKey.Escape:
+                runGame = false;
                 break;
             default:
                 break;
         }
         Console.SetCursorPosition(tempX, tempY);
-        player.Position = new Position(tempX, tempY);
+        ActivePlayer.Position = new Position(tempX, tempY);
+        Console.ForegroundColor = ActivePlayer.ElementColor;
+        Console.Write(ActivePlayer.ElementForm);
+        Console.ResetColor();
+    }
+    public void PlayerStats()
+    {
+        ClearStatInfo();
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine($"playername: {ActivePlayer.Name} Hp:{ActivePlayer.Hp} Turns: {Turn++}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
+        Console.ResetColor();
+    }
+    public void EnemyTurn()
+    {
         
-        Console.ForegroundColor = player.ElementColor;
-        Console.Write(player.ElementForm);
-    }
-    public void PlayerStats(Player player, int turn)
-    {
-        Console.SetCursorPosition(0, 20);
-        Console.WriteLine($"playername: {player.Name} Hp:{player.PlayerHp} Turns: {turn}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
-    }
-
-    public void EnemyTurn(LevelData levelData)
-    {
-        foreach (var item in levelData.Elements)
+        for (int i = GameLevelData.Elements.Count - 1; i >= 0; i--)
         {
-            if (item is Enemy)
+            if (GameLevelData.Elements[i] is Enemy enemy)
             {
-                Enemy enemy = item as Enemy;
-                enemy.Update();
-                //PlayerAction.CheckIfSpace(enemy.Position.X, enemy.Position.Y, levelData);
-
+                if (enemy.Hp <= 0)
+                {
+                    GameLevelData.Elements.RemoveAt(i);
+                }
+                else
+                {
+                    enemy.Update(ActivePlayer, GameLevelData);
+                }
             }
         }
+       
+    }
+
+    //https://stackoverflow.com/questions/8946808/can-console-clear-be-used-to-only-clear-a-line-instead-of-whole-console
+    public void ClearStatInfo()
+    {
+        Console.SetCursorPosition(0, 0);
+        Console.WriteLine(new string(' ', Console.WindowWidth));
     }
 }

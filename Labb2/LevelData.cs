@@ -13,10 +13,12 @@
     public void LoadLevel() //Läser in text filen och skapar objekt av respektive tecken
     {
         //_elements = new List<LevelElement>();
-        string level = @"C:\Users\Chral\source\repos\NET24\Csharp\Labb2\Labb2\Levels\Level1.txt";
-        StreamReader streamReader = new StreamReader(level);
+        string path = Directory.GetCurrentDirectory();
+        string fullPath = path + @"\labb2\levels\level1.txt";
+        StreamReader streamReader = new StreamReader(fullPath);
         string line;
         int tempYPos = 0;
+        int offSetY = 3;
         while ((line = streamReader.ReadLine()) != null)
         {
             for (int tempXPos = 0; tempXPos < line.Length; tempXPos++)
@@ -24,16 +26,16 @@
                 switch (line[tempXPos])
                 {
                     case '#':
-                        Elements.Add(new Wall(tempXPos, tempYPos));
+                        Elements.Add(new Wall(tempXPos, tempYPos + offSetY));
                         break;
                     case 's':
-                        Elements.Add(new Snake(tempXPos, tempYPos));
+                        Elements.Add(new Snake(tempXPos, tempYPos + offSetY));
                         break;
                     case 'r':
-                        Elements.Add(new Rat(tempXPos, tempYPos));
+                        Elements.Add(new Rat(tempXPos, tempYPos + offSetY));
                         break;
                     case '@':
-                        PlayerStartPosition = new Position(tempXPos, tempYPos);
+                        PlayerStartPosition = new Position(tempXPos, tempYPos + offSetY);
                         break;
                     default:
                         break;

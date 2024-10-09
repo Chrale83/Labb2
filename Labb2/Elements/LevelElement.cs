@@ -7,10 +7,22 @@
     {
         this.Position = new Position(x, y);
     }
-    public void Draw()
+    public void Draw(Player playerPosition)
     {
-        Console.SetCursorPosition(this.Position.X, this.Position.Y); 
+        double distance = Math.Sqrt(Math.Pow(playerPosition.Position.X - Position.X, 2) + Math.Pow(playerPosition.Position.Y - Position.Y, 2));
+        if (distance <= 5)
+        {
+            Console.SetCursorPosition(this.Position.X, this.Position.Y); 
         Console.ForegroundColor = this.ElementColor;
         Console.Write($"{ElementForm}");
+    }
+        if (distance > 5 && this is Enemy)
+        {
+            Console.SetCursorPosition(this.Position.X, this.Position.Y);
+    Console.ForegroundColor = this.ElementColor;
+    Console.Write($" ");
+        }
+
+
     }
 }
