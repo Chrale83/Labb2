@@ -1,11 +1,12 @@
-﻿using System.Numerics;
+﻿
+using System.Numerics;
 using System;
-using System.Reflection.PortableExecutable;
+
 namespace Labb2
 {
     public static class GameAction
     {
-        const int dontMoveToPosition = 0;
+        const int cantMoveToPosition = 0;
         const int moveToPosition = 1;
         const int adjecentPosition = 1;
         public static int MoveLeft(int x, int y, LevelData levelData, Player player)
@@ -14,7 +15,7 @@ namespace Labb2
             {
                 return moveToPosition;
             }
-            return dontMoveToPosition;
+            return cantMoveToPosition;
         }
         public static int MoveRight(int x, int y, LevelData levelData, Player player)
         {
@@ -22,7 +23,7 @@ namespace Labb2
             {
                 return moveToPosition;
             }
-            return dontMoveToPosition;
+            return cantMoveToPosition;
         }
         public static int MoveUpp(int x, int y, LevelData levelData, Player player)
         {
@@ -30,7 +31,7 @@ namespace Labb2
             {
                 return moveToPosition;
             }
-            return dontMoveToPosition;
+            return cantMoveToPosition;
         }
         public static int MoveDown(int x, int y, LevelData levelData, Player player)
         {
@@ -38,28 +39,30 @@ namespace Labb2
             {
                 return moveToPosition;
             }
-            return dontMoveToPosition;
+            return cantMoveToPosition;
         }
         public static bool CheckIfSpacePlayer(int x, int y, LevelData levelData, Player player)
         {
             foreach (var element in levelData.Elements)
             {
-                bool isWall = element is Wall;
+                
                 bool HasSameXPosition = element.Position.X == x;
                 bool HasSameYPosition = element.Position.Y == y;
                 bool HasSamePostion = HasSameXPosition && HasSameYPosition;
-                if (isWall && HasSamePostion)
+                if (element is Wall && HasSamePostion)
                 {
                     return false;
                 }
-                if (element is Enemy enemy && HasSamePostion)
+                else if (element is Enemy enemy && HasSamePostion)
                 {
-                    return PlayerAttacks(enemy, player, levelData);
+                    
+                    return PlayerAttacks(enemy, player);
+
                 }
             }
             return true;
         }
-        public static bool PlayerAttacks(Enemy enemy, Player player, LevelData levelData)
+        public static bool PlayerAttacks(Enemy enemy, Player player)
         {
             int playerDmg = player.DiceAttack.Throw();
             int enemyDef = enemy.DiceDefence.Throw();
@@ -74,8 +77,9 @@ namespace Labb2
             if (enemyTotalDmg > 0)
             {
                 player.Hp -= enemyTotalDmg;
+                
             }
-            ClearFightStat();
+            ClearStatusWindows(1,2);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(0, 1);
             Console.WriteLine($"{player.Name} (ATK: {player.DiceAttack}=> {playerDmg}) attacked the {enemy.Name} (DEF: {enemy.DiceDefence} => {enemyDef}) {FightStatusInText(playerTotalDmg)}");
@@ -104,7 +108,7 @@ namespace Labb2
             {
                 enemy.Hp -= playerTotalDmg;
             }
-            ClearFightStat();
+            ClearStatusWindows(1,2);
             
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(0, 1);
@@ -112,6 +116,7 @@ namespace Labb2
             Console.SetCursorPosition(0, 2);
             Console.WriteLine($"{player.Name} (ATK: {player.DiceAttack}=> {playerDmg}) attacked the {enemy.Name} (DEF: {enemy.DiceDefence} => {enemyDef}) {FightStatusInText(playerTotalDmg)} ");
 
+            
             Console.ResetColor();
             if (enemy.Hp <= 0)
             {
@@ -120,6 +125,7 @@ namespace Labb2
             return false;
         }
 
+       
         public static string FightStatusInText(int damage)
         {
             if (damage <= 0)
@@ -128,20 +134,27 @@ namespace Labb2
             }
             else if (damage <= 5)
             {
-                return "slightly wounded the";
+                return "Slightly wounded";
             }
             else  
             {
-                return " severly damaged the ";
+                return "Severly damaged";
             }
+            
+            
 
         }
-        public static void ClearFightStat()
+        public static void ClearStatusWindows(int line1, int line2)
         {
-            Console.SetCursorPosition(0, 1);
+            Console.SetCursorPosition(0, line1);
             Console.Write(new string(' ', Console.WindowWidth));
-            Console.SetCursorPosition(0, 2);
+            Console.SetCursorPosition(0, line2);
             Console.Write(new string(' ', Console.WindowWidth));
+        }
+        public static void ClearStatInfo()
+        {
+            Console.SetCursorPosition(0, 0);
+            Console.WriteLine(new string(' ', Console.WindowWidth));
         }
     }
 }

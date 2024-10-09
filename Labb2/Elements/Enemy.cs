@@ -1,5 +1,6 @@
 ﻿using Labb2;
 using System.Data;
+using System.Numerics;
 public abstract class Enemy : LevelElement
 {
     public string Name { get; set; }
@@ -10,6 +11,40 @@ public abstract class Enemy : LevelElement
     {
     }
     public abstract void Update(Player player, LevelData levelData);
+
+    public void Movement(int tempX, int tempY, LevelData levelData, Player player, Move direction)
+    {
+        switch (direction)
+        {
+            case Move.Up:
+                if (CheckIfSpaceEnemy(tempX, tempY - 1, levelData, player, this))
+                {
+                    tempY -= 1;
+                }
+                break;
+            case Move.Down:
+                if (CheckIfSpaceEnemy(tempX, tempY + 1, levelData, player, this))
+                {
+                    tempY += 1;
+                }
+                break;
+            case Move.Left:
+                if (CheckIfSpaceEnemy(tempX - 1, tempY, levelData, player, this))
+                {
+                    tempX -= 1;
+                }
+                break;
+            case Move.Right:
+                if (CheckIfSpaceEnemy(tempX + 1, tempY, levelData, player, this))
+                {
+                    tempX += 1;
+                }
+                break;
+        }
+        this.Position = new Position(tempX, tempY);
+        Console.SetCursorPosition(tempX, tempY);
+        Console.Write(this.ElementForm);
+    }
 
     public bool CheckIfSpaceEnemy(int x, int y, LevelData levelData, Player player, Enemy enemy)
     {
@@ -29,6 +64,14 @@ public abstract class Enemy : LevelElement
             }
         }
         return true;
+    }
+
+    public enum Move
+    {
+        Up,
+        Down,
+        Left,
+        Right,
     }
 
 

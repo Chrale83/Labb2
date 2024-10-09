@@ -13,58 +13,11 @@
     {
         Random random = new Random();
         int randMove = random.Next(0, 4);
-        Move MoveDirection = (Move)randMove;
+        Move direction = (Move)randMove;
         int tempX = this.Position.X;
         int tempY = this.Position.Y;
         Console.SetCursorPosition(tempX, tempY);
         Console.Write(" ");
-
-        switch (MoveDirection)
-        {
-            case Move.Up:
-                if (CheckIfSpaceEnemy(tempX, tempY - 1, levelData, player, this))
-                {
-                    tempY -= 1;
-
-                }
-                break;
-            case Move.Down:
-                if (CheckIfSpaceEnemy(tempX, tempY + 1, levelData, player, this))
-                {
-                    tempY += 1;
-                }
-
-                break;
-            case Move.Left:
-                if (CheckIfSpaceEnemy(tempX - 1, tempY, levelData, player, this))
-                {
-                tempX -= 1;
-
-                }
-                break;
-            case Move.Right:
-                if (CheckIfSpaceEnemy(tempX + 1, tempY, levelData, player, this))
-                {
-                    tempX += 1;
-                }
-                
-                break;
-        }
-        this.Position = new Position(tempX, tempY);
-        Console.SetCursorPosition(tempX, tempY);
-        Console.Write(this.ElementForm);
-        
-    }
-    enum Move
-    {
-        Up,
-        Down,
-        Left,
-        Right,
+        Movement(tempX, tempY, levelData, player, direction);
     }
 }
-            
-
-
-        
-

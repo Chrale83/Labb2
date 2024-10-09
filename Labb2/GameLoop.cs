@@ -16,59 +16,87 @@ public class GameLoop
     }
     public void GameRun()
     {
+        GameInfo();
         while (runGame)
         {
-            
-            DrawMap();
+
             PlayerInfo();
+            DrawMap();
             PlayerTurn();
             EnemyTurn();
-            
-            
+
+
         }
     }
+    public void GameInfo()
+    {
+        Console.ForegroundColor = ConsoleColor.Red;
+        Console.WriteLine("Använd pil tagenterna för att flytta spelaren, Space för att hoppa en runda och ESC för att avsluta spelet");
+        Console.WriteLine("Tryck valfri tagent för att starta spelet");
+        Console.ResetColor();
+        Console.ReadKey();
+        GameAction.ClearStatusWindows(1, 2);
+
+        
+    }
+
     public void DrawMap()
     {
+        ActivePlayer.Draw();
         foreach (var item in GameLevelData.Elements)
         {
             item.Draw(ActivePlayer);
         }
     }
-    public void PlayerTurn() //-----> Flytta denna till PlayerAction??? <----
+    public void PlayerTurn() //-----> Flytta denna till GameAction eller player???? <----
     {
         int tempX = ActivePlayer.Position.X;
         int tempY = ActivePlayer.Position.Y;
-        ConsoleKeyInfo keyPressed = Console.ReadKey();
+        bool isValidKey = false;
+
+        while (!isValidKey)
+        {
+
+        
+        ConsoleKeyInfo keyPressed = Console.ReadKey(true);
         Console.SetCursorPosition(tempX, tempY);
         Console.Write(" ");
         switch (keyPressed.Key)
         {
             case ConsoleKey.LeftArrow:
                 tempX -= GameAction.MoveLeft(tempX, tempY, GameLevelData, ActivePlayer);
+                    isValidKey = true;
                 break;
             case ConsoleKey.RightArrow:
                 tempX += GameAction.MoveRight(tempX, tempY, GameLevelData, ActivePlayer);
-                break;
+                    isValidKey = true;
+                    break;
             case ConsoleKey.UpArrow:
                 tempY -= GameAction.MoveUpp(tempX, tempY, GameLevelData, ActivePlayer);
-                break;
+                    isValidKey = true;
+                    break;
             case ConsoleKey.DownArrow:
                 tempY += GameAction.MoveDown(tempX, tempY, GameLevelData, ActivePlayer);
-                break;
+                    isValidKey = true;
+                    break;
             case ConsoleKey.Spacebar:
-                
-                break;
+                    isValidKey = true;
+
+                    break;
             case ConsoleKey.Escape:
                 runGame = false;
-                break;
+                    isValidKey = true;
+                    break;
             default:
+                Console.SetCursorPosition(0, 20);
+                Console.WriteLine("Du använder piltagenterna för att styra och ESC för att avsluta spelet");
+               
                 break;
         }
-        Console.SetCursorPosition(tempX, tempY);
+        }
+        
         ActivePlayer.Position = new Position(tempX, tempY);
-        Console.ForegroundColor = ActivePlayer.ElementColor;
-        Console.Write(ActivePlayer.ElementForm);
-        Console.ResetColor();
+        
     }
     public void PlayerInfo()
     {
@@ -76,16 +104,16 @@ public class GameLoop
         {
             runGame = false;
         }
-        ClearStatInfo();
+        GameAction.ClearStatInfo();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.SetCursorPosition(0, 0);
-        
-        Console.WriteLine($"{ActivePlayer.Name} - Hp:{ActivePlayer.Hp} - Turns: {Turn++}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
+
+        Console.WriteLine($"{ActivePlayer.Name} - Hp:{ActivePlayer.Hp}/100 - Turns: {Turn++}");
         Console.ResetColor();
     }
     public void EnemyTurn()
     {
-        
+
         for (int i = GameLevelData.Elements.Count - 1; i >= 0; i--)
         {
             if (GameLevelData.Elements[i] is Enemy enemy)
@@ -100,13 +128,6 @@ public class GameLoop
                 }
             }
         }
-       
-    }
 
-    //https://stackoverflow.com/questions/8946808/can-console-clear-be-used-to-only-clear-a-line-instead-of-whole-console
-    public void ClearStatInfo()
-    {
-        Console.SetCursorPosition(0, 0);
-        Console.WriteLine(new string(' ', Console.WindowWidth));
     }
 }

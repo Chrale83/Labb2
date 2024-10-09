@@ -10,11 +10,9 @@
     {
         _elements = new List<LevelElement>();
     }
-    public void LoadLevel(string levelPath) //Läser in text filen och skapar objekt av respektive tecken
+    public void LoadLevel(string levelPath)
     {
-        //_elements = new List<LevelElement>();
-        string path = Directory.GetCurrentDirectory();
-        string fullPath = path + @"\labb2\levels\level1.txt";
+        
         string line;
         int tempYPos = 0;
         int offSetY = 3;

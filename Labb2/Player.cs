@@ -1,6 +1,6 @@
 ﻿public class Player : LevelElement
 {
-    public string Name { get { return "Dräparen"; } }
+    public string Name { get { return "Christian";  } }
     public int Hp { get; set; }
     public Dice DiceAttack { get; set; }
     public Dice DiceDefence { get; set; }
@@ -13,4 +13,13 @@
         DiceDefence = new Dice(2, 6, 0);
         this.Hp = 100;
     }
+    
+    public override void Draw()
+    {
+        Console.SetCursorPosition(this.Position.X, this.Position.Y);
+        Console.ForegroundColor = this.ElementColor;
+        Console.Write(this.ElementForm);
+    }
+
+    
 }
