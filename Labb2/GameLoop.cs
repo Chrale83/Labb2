@@ -6,11 +6,12 @@ public class GameLoop
     public LevelData GameLevelData { get; set; }
     public Player ActivePlayer { get; set; }
     public int Turn { get; set; }
-    public GameLoop()
+
+    public GameLoop(string levelPath)
     {
         this.Turn = 0;
         this.GameLevelData = new LevelData();
-        this.GameLevelData.LoadLevel();
+        this.GameLevelData.LoadLevel(levelPath);
         this.ActivePlayer = new Player(GameLevelData.PlayerStartPosition);
     }
     public void GameRun()
@@ -19,7 +20,7 @@ public class GameLoop
         {
             
             DrawMap();
-            PlayerStats();
+            PlayerInfo();
             PlayerTurn();
             EnemyTurn();
             
@@ -69,12 +70,17 @@ public class GameLoop
         Console.Write(ActivePlayer.ElementForm);
         Console.ResetColor();
     }
-    public void PlayerStats()
+    public void PlayerInfo()
     {
+        if (ActivePlayer.Hp <= 0)
+        {
+            runGame = false;
+        }
         ClearStatInfo();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.SetCursorPosition(0, 0);
-        Console.WriteLine($"playername: {ActivePlayer.Name} Hp:{ActivePlayer.Hp} Turns: {Turn++}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
+        
+        Console.WriteLine($"{ActivePlayer.Name} - Hp:{ActivePlayer.Hp} - Turns: {Turn++}"); //Här ska omgångräknaren står, spelarensnamn, samt spelarens Hp
         Console.ResetColor();
     }
     public void EnemyTurn()

@@ -1,19 +1,13 @@
 ﻿
-string path = Directory.GetCurrentDirectory();
+string path = @"levels\level1.txt";
+string fullPath = Path.GetFullPath(path);
+
+
+Console.WriteLine(path);
+
 Console.CursorVisible = false;
-GameLoop StartGame = new GameLoop();
+GameLoop StartGame = new GameLoop(fullPath);
 StartGame.GameRun();
 
 Console.Clear();
 Console.WriteLine("Spelet är avslutat");
-
-
-//Todo
-
-
-
-// .Fixa filinläsningen
-// .Göra så spelaren kan dö
-// .Snygga till strdstexten
-// .Titta över namn på metoder/variabler/klasser
-// 

@@ -58,22 +58,22 @@
     {
         if (distanceY <= distanceX)
         {
-            if (distanceY <= 0) //Är negativt
+            if (distanceY <= 0)
             {
                 return Move.Down;
             }
-            else if (distanceY >= 0) //Är positivt
+            else if (distanceY >= 0)
             {
                 return Move.Up;
             }
         }
         else
         {
-            if (distanceX <= 0) //Är negativt
+            if (distanceX <= 0)
             {
                 return Move.Left;
             }
-            else if (distanceX >= 0) //Är positivt
+            else if (distanceX >= 0)
             {
                 return Move.Right;
             }
