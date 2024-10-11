@@ -12,7 +12,7 @@ public abstract class Enemy : LevelElement
     }
     public abstract void Update(Player player, LevelData levelData);
 
-    public void Movement(int tempX, int tempY, LevelData levelData, Player player, Move direction)
+    public void Movement(int tempX, int tempY, LevelData levelData, Player player, Move direction)  //<---------------- MAGISKA NUMMER I SWITCH SATSEN!
     {
         switch (direction)
         {
@@ -42,8 +42,7 @@ public abstract class Enemy : LevelElement
                 break;
         }
         this.Position = new Position(tempX, tempY);
-        Console.SetCursorPosition(tempX, tempY);
-        Console.Write(this.ElementForm);
+        
     }
 
     public bool CheckIfSpaceEnemy(int x, int y, LevelData levelData, Player player, Enemy enemy)

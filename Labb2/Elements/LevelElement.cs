@@ -16,16 +16,14 @@
             Console.SetCursorPosition(this.Position.X, this.Position.Y);
             Console.ForegroundColor = this.ElementColor;
             Console.Write($"{ElementForm}");
-
         }
-        if (this is Enemy && distance > 5)
+        else if (this is Enemy)
         {
             Console.SetCursorPosition(this.Position.X, this.Position.Y);
             Console.ForegroundColor = ConsoleColor.Black;
             Console.Write($" ");
         }
 
-
     }
-    public virtual void Draw() { }
+    //public virtual void Draw() { }
 }

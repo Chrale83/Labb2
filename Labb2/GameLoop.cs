@@ -1,5 +1,4 @@
 ﻿using Labb2;
-using System.Security.Cryptography.X509Certificates;
 public class GameLoop
 {
     private bool runGame = true;
@@ -16,28 +15,27 @@ public class GameLoop
     }
     public void GameRun()
     {
-        GameInfo();
+        FirstStartInfo();
         while (runGame)
         {
-
             PlayerInfo();
             DrawMap();
             PlayerTurn();
             EnemyTurn();
-
-
         }
     }
-    public void GameInfo()
+
+    public void FirstStartInfo()
     {
         Console.ForegroundColor = ConsoleColor.Red;
-        Console.WriteLine("Använd pil tagenterna för att flytta spelaren, Space för att hoppa en runda och ESC för att avsluta spelet");
-        Console.WriteLine("Tryck valfri tagent för att starta spelet");
+
+        Console.SetCursorPosition(20, 5); Console.WriteLine("Använd pil tagenterna för att flytta spelaren");
+        Console.SetCursorPosition(29, 6); Console.WriteLine("Space för att hoppa en runda");
+        Console.SetCursorPosition(30, 7); Console.WriteLine("ESC för att avsluta spelet");
+        Console.SetCursorPosition(22, 9); Console.WriteLine("Tryck valfri tagent för att starta spelet");
         Console.ResetColor();
         Console.ReadKey();
-        GameAction.ClearStatusWindows(1, 2);
-
-        
+        Console.Clear();
     }
 
     public void DrawMap()
@@ -48,62 +46,59 @@ public class GameLoop
             item.Draw(ActivePlayer);
         }
     }
+
     public void PlayerTurn() //-----> Flytta denna till GameAction eller player???? <----
     {
+        if (ActivePlayer.Hp <= 0)
+        {
+            runGame = false;
+        }
+
         int tempX = ActivePlayer.Position.X;
         int tempY = ActivePlayer.Position.Y;
         bool isValidKey = false;
 
         while (!isValidKey)
         {
-
-        
-        ConsoleKeyInfo keyPressed = Console.ReadKey(true);
-        Console.SetCursorPosition(tempX, tempY);
-        Console.Write(" ");
-        switch (keyPressed.Key)
-        {
-            case ConsoleKey.LeftArrow:
-                tempX -= GameAction.MoveLeft(tempX, tempY, GameLevelData, ActivePlayer);
-                    isValidKey = true;
-                break;
-            case ConsoleKey.RightArrow:
-                tempX += GameAction.MoveRight(tempX, tempY, GameLevelData, ActivePlayer);
+            ConsoleKeyInfo keyPressed = Console.ReadKey(true);
+            Console.SetCursorPosition(tempX, tempY);
+            Console.Write(" ");
+            switch (keyPressed.Key)
+            {
+                case ConsoleKey.LeftArrow:
+                    tempX -= GameAction.MoveLeft(tempX, tempY, GameLevelData, ActivePlayer);
                     isValidKey = true;
                     break;
-            case ConsoleKey.UpArrow:
-                tempY -= GameAction.MoveUpp(tempX, tempY, GameLevelData, ActivePlayer);
+                case ConsoleKey.RightArrow:
+                    tempX += GameAction.MoveRight(tempX, tempY, GameLevelData, ActivePlayer);
                     isValidKey = true;
                     break;
-            case ConsoleKey.DownArrow:
-                tempY += GameAction.MoveDown(tempX, tempY, GameLevelData, ActivePlayer);
+                case ConsoleKey.UpArrow:
+                    tempY -= GameAction.MoveUpp(tempX, tempY, GameLevelData, ActivePlayer);
                     isValidKey = true;
                     break;
-            case ConsoleKey.Spacebar:
-                    isValidKey = true;
-
-                    break;
-            case ConsoleKey.Escape:
-                runGame = false;
+                case ConsoleKey.DownArrow:
+                    tempY += GameAction.MoveDown(tempX, tempY, GameLevelData, ActivePlayer);
                     isValidKey = true;
                     break;
-            default:
-                Console.SetCursorPosition(0, 20);
-                Console.WriteLine("Du använder piltagenterna för att styra och ESC för att avsluta spelet");
-               
-                break;
+                case ConsoleKey.Spacebar:
+                    isValidKey = true;
+                    break;
+                case ConsoleKey.Escape:
+                    runGame = false;
+                    isValidKey = true;
+                    break;
+                default:
+                    Console.SetCursorPosition(0, 20);
+                    Console.WriteLine("Du använder piltagenterna för att styra och ESC för att avsluta spelet");
+                    break;
+            }
         }
-        }
-        
         ActivePlayer.Position = new Position(tempX, tempY);
-        
+
     }
     public void PlayerInfo()
     {
-        if (ActivePlayer.Hp <= 0)
-        {
-            runGame = false;
-        }
         GameAction.ClearStatInfo();
         Console.ForegroundColor = ConsoleColor.Green;
         Console.SetCursorPosition(0, 0);
@@ -113,7 +108,6 @@ public class GameLoop
     }
     public void EnemyTurn()
     {
-
         for (int i = GameLevelData.Elements.Count - 1; i >= 0; i--)
         {
             if (GameLevelData.Elements[i] is Enemy enemy)
@@ -128,6 +122,5 @@ public class GameLoop
                 }
             }
         }
-
     }
 }

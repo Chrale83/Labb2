@@ -1,8 +1,4 @@
-﻿
-using System.Numerics;
-using System;
-
-namespace Labb2
+﻿namespace Labb2
 {
     public static class GameAction
     {
@@ -45,7 +41,7 @@ namespace Labb2
         {
             foreach (var element in levelData.Elements)
             {
-                
+
                 bool HasSameXPosition = element.Position.X == x;
                 bool HasSameYPosition = element.Position.Y == y;
                 bool HasSamePostion = HasSameXPosition && HasSameYPosition;
@@ -55,43 +51,49 @@ namespace Labb2
                 }
                 else if (element is Enemy enemy && HasSamePostion)
                 {
-                    
+
                     return PlayerAttacks(enemy, player);
 
                 }
             }
             return true;
         }
-        public static bool PlayerAttacks(Enemy enemy, Player player)
+        public static bool PlayerAttacks(Enemy enemy, Player player) //<------------ Slå ihop denna metod med EnemyAttacks metoden !!!!!!!
         {
             int playerDmg = player.DiceAttack.Throw();
             int enemyDef = enemy.DiceDefence.Throw();
             int playerTotalDmg = playerDmg - enemyDef;
+
             if (playerTotalDmg > 0)
             {
                 enemy.Hp -= playerTotalDmg;
             }
+
             int enemyDmg = enemy.DiceAttack.Throw();
             int playerDef = player.DiceDefence.Throw();
             int enemyTotalDmg = enemyDmg - playerDef;
+
             if (enemyTotalDmg > 0)
             {
                 player.Hp -= enemyTotalDmg;
-                
+
             }
-            ClearStatusWindows(1,2);
+
+            ClearStatusWindows(1, 2);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(0, 1);
             Console.WriteLine($"{player.Name} (ATK: {player.DiceAttack}=> {playerDmg}) attacked the {enemy.Name} (DEF: {enemy.DiceDefence} => {enemyDef}) {FightStatusInText(playerTotalDmg)}");
             Console.SetCursorPosition(0, 2);
             Console.WriteLine($"{enemy.Name} (ATK: {enemy.DiceAttack}=> {enemyDmg}) attacked {player.Name} (DEF: {player.DiceDefence} => {playerDef}) {FightStatusInText(enemyTotalDmg)}");
             Console.ResetColor();
+
             if (enemy.Hp <= 0)
             {
                 return true;
             }
             return false;
         }
+
         public static bool EnemyAttacks(Enemy enemy, Player player, LevelData levelData)
         {
             int enemyDmg = enemy.DiceAttack.Throw();
@@ -108,16 +110,15 @@ namespace Labb2
             {
                 enemy.Hp -= playerTotalDmg;
             }
-            ClearStatusWindows(1,2);
-            
+
+            ClearStatusWindows(1, 2);
             Console.ForegroundColor = ConsoleColor.Red;
             Console.SetCursorPosition(0, 1);
             Console.WriteLine($"{enemy.Name} (ATK: {enemy.DiceAttack}=> {enemyDmg}) attacked {player.Name} (DEF: {player.DiceDefence} => {playerDef}) {FightStatusInText(enemyTotalDmg)}");
             Console.SetCursorPosition(0, 2);
             Console.WriteLine($"{player.Name} (ATK: {player.DiceAttack}=> {playerDmg}) attacked the {enemy.Name} (DEF: {enemy.DiceDefence} => {enemyDef}) {FightStatusInText(playerTotalDmg)} ");
-
-            
             Console.ResetColor();
+
             if (enemy.Hp <= 0)
             {
                 return true;
@@ -125,7 +126,6 @@ namespace Labb2
             return false;
         }
 
-       
         public static string FightStatusInText(int damage)
         {
             if (damage <= 0)
@@ -136,13 +136,10 @@ namespace Labb2
             {
                 return "Slightly wounded";
             }
-            else  
+            else
             {
                 return "Severly damaged";
             }
-            
-            
-
         }
         public static void ClearStatusWindows(int line1, int line2)
         {

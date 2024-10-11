@@ -2,22 +2,23 @@
 {
     private List<LevelElement> _elements;
     public Position PlayerStartPosition { get; set; }
+    
     public List<LevelElement> Elements
     {
         get { return _elements; }
     }
-    public LevelData() //Konstruktorn
+    public LevelData() 
     {
         _elements = new List<LevelElement>();
     }
+    
     public void LoadLevel(string levelPath)
     {
-        
         string line;
         int tempYPos = 0;
         int offSetY = 3;
-        using (StreamReader streamReader = new StreamReader(levelPath))
-        while ((line = streamReader.ReadLine()) != null)
+        using (StreamReader mapLoader = new StreamReader(levelPath))
+        while ((line = mapLoader.ReadLine()) != null)
         {
             for (int tempXPos = 0; tempXPos < line.Length; tempXPos++)
             {

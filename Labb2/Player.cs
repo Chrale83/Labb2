@@ -14,12 +14,10 @@
         this.Hp = 100;
     }
     
-    public override void Draw()
+    public void Draw()
     {
         Console.SetCursorPosition(this.Position.X, this.Position.Y);
         Console.ForegroundColor = this.ElementColor;
         Console.Write(this.ElementForm);
     }
-
-    
 }
